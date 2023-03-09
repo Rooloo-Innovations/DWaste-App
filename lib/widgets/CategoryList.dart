@@ -1,11 +1,10 @@
 import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 
-
 class CategoryList extends StatelessWidget {
   final List<Category> categories;
 
-  CategoryList({required this.categories});
+  CategoryList({super.key, required this.categories});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class CategoryList extends StatelessWidget {
                     radius: 20.0,
                     backgroundColor: categories[index].color,
                     child: Icon(
-                      categories[index].icon,
+                      categories[index].icon as IconData?,
                       color: Colors.white,
                     ),
                   ),
@@ -54,10 +53,14 @@ class CategoryList extends StatelessWidget {
 }
 
 class Category {
-  final IconData icon;
+  final Icon icon;
   final String name;
   final Color color;
   final Widget page;
 
-  Category({required this.icon, required this.name, required this.color, required this.page});
+  Category(
+      {required this.icon,
+      required this.name,
+      required this.color,
+      required this.page});
 }

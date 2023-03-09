@@ -2,46 +2,64 @@ import 'package:flutter/material.dart';
 
 class DSearchBar extends StatefulWidget {
   final List<String> items;
-  final String hint;
-  final IconData HintIcon;
-  
-  DSearchBar({
+
+  const DSearchBar({
+    super.key,
     required this.items,
-    required this.hint,
-    required this.HintIcon
   });
-  
+
   @override
   _DSearchBarState createState() => _DSearchBarState();
 }
 
 class _DSearchBarState extends State<DSearchBar> {
   late List<String> filteredItems;
-  
+  final List<String> _previousSearches = [];
+
   @override
   void initState() {
     super.initState();
     filteredItems = widget.items;
   }
-  
-  void search(String query) {
+
+  void _search(String query) {
     setState(() {
       filteredItems = widget.items
           .where((item) => item.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
-  
+
+  void _showPreviousSearches() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => ListView.builder(
+        itemCount: _previousSearches.length,
+        itemBuilder: (context, index) => ListTile(
+          title: Text(_previousSearches[index]),
+          onTap: () {
+            _search(_previousSearches[index]);
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextField(
           decoration: InputDecoration(
-            hintText: widget.hint,
-            prefixIcon: Icon(widget.HintIcon)
+            hintText: 'Search dwaste shop',
+            prefixIcon: Icon(Icons.search),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.history),
+              onPressed: () => _showPreviousSearches(),
+            ),
           ),
-          onChanged: (value) => search(value),
+          onChanged: (value) => _search(value),
         ),
         Expanded(
           child: ListView.builder(
