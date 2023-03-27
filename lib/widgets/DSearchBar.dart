@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DSearchBar extends StatefulWidget {
-  final List<String> items;
+  final List<dynamic> items;
 
   const DSearchBar({
     super.key,
@@ -13,7 +13,7 @@ class DSearchBar extends StatefulWidget {
 }
 
 class _DSearchBarState extends State<DSearchBar> {
-  late List<String> filteredItems;
+  late List<dynamic> filteredItems;
   final List<String> _previousSearches = [];
 
   @override
