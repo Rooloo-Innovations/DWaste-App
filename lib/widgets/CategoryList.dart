@@ -31,11 +31,11 @@ class CategoryList extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 20.0,
-                    backgroundColor: categories[index].color,
                     child: Icon(
-                      categories[index].icon as IconData?,
+                      categories[index].iconURL as IconData?,
                       color: Colors.white,
                     ),
+                    backgroundColor: Color.white,
                   ),
                   SizedBox(height: 5.0),
                   Text(
@@ -53,14 +53,12 @@ class CategoryList extends StatelessWidget {
 }
 
 class Category {
-  final Icon icon;
+  final Icon iconURL;
   final String name;
-  final Color color;
   final Widget page;
 
   Category(
-      {required this.icon,
+      {required this.iconURL,
       required this.name,
-      required this.color,
       required this.page});
 }

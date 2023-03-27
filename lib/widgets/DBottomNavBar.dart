@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../screens/shop_screen.dart';
+
 class DBottomNavBar extends StatefulWidget {
   const DBottomNavBar({super.key});
 
@@ -12,7 +14,7 @@ class _DBottomNavBarState extends State<DBottomNavBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    //HomeScreen(),
+    ShopScreen(),
     //ScannerScreen(),
     //CartScreen(),
     //ProfileScreen(),
