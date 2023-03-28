@@ -1,4 +1,5 @@
-import 'package:dwaste/screens/startup_screen.dart';
+import 'package:dwaste/screens/login_screen.dart';
+import 'package:dwaste/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -6,7 +7,6 @@ import 'models/app_colors.dart';
 
 void main() async {
   await initHiveForFlutter();
-
   runApp(const MyApp());
 }
 
@@ -16,34 +16,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final HttpLink httpLink = HttpLink(
-      'https://dwaste.knowjamil.com/graphql',
-    );
-    final AuthLink authLink = AuthLink(
-      getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-      // OR
-      // getToken: () => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-    );
-
-    final Link link = authLink.concat(httpLink);
-
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
-      GraphQLClient(
-        link: link,
-        // The default store is the InMemoryStore, which does NOT persist to disk
-        cache: GraphQLCache(store: HiveStore()),
+    return MaterialApp(
+      title: 'Dwaste',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
-    );
-
-    return GraphQLProvider(
-      client: client,
-      child: MaterialApp(
-        title: 'Dwaste',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const MyHomePage(title: 'Dwaste'),
-      ),
+      home: const MyHomePage(title: 'Dwaste'),
     );
   }
 }
@@ -70,9 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         primaryColor: AppColors.yellow,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => StartupScreen(),
+        '/': (context) => CreateAccountScreen(),
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => CreateAccountScreen(),
       },
     );
   }

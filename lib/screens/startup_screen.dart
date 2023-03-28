@@ -1,5 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:dwaste/screens/onboarding_screen.dart';
+import 'package:dwaste/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class StartupScreen extends StatefulWidget {
@@ -13,6 +13,6 @@ class _StartupScreenState extends State<StartupScreen> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-        splash: 'assets/images/logo.png', nextScreen: OnBoardingScreen());
+        splash: 'assets/images/logo.png', nextScreen: LoginScreen());
   }
 }

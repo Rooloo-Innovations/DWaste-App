@@ -40,6 +40,7 @@ dependencies:
     git: https://github.com/Rooloo-Innovations/flutter_onboarding_slider.git
 
   animated_splash_screen: ^1.3.0
+  shared_preferences: ^2.0.20
 
 dev_dependencies:
   flutter_test:
