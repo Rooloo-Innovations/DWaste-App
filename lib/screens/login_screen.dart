@@ -72,6 +72,19 @@ class _LoginScreenState extends State<LoginScreen> {
       print(data['loginUser']['success']);
       print(data['loginUser']['accessToken']);
 
+      if (data['loginUser']['success'] == false) {
+        setState(() {
+          _errorMessage = data['loginUser']['message'];
+        });
+      } else {
+        if (!mounted) return;
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          ModalRoute.withName('/login'),
+        );
+      }
+
       // TODO: Navigate to the next screen with the access token.
     } catch (e) {
       setState(() {
@@ -87,99 +100,118 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.asset(
-                'assets/images/login.png',
-                fit: BoxFit.fill,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const TextSemiBold(text: 'Welcome Back,'),
-                    SizedBox(
-                      height: 8.0,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset(
+              'assets/images/login.png',
+              fit: BoxFit.fill,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  const TextSemiBold(text: 'Welcome Back,'),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  const Text(
+                    'Your city is clean because of your effort',
+                    style: TextStyle(
+                      color: Color(0xff373B42),
+                      fontSize: 16.0,
                     ),
-                    const Text(
-                      'Your city is clean because of your effort',
-                      style: TextStyle(
-                        color: Color(0xff373B42),
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    AppTextFields(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      text: 'Email',
-                      hintText: 'yourname@email.com',
-                      icon: Icon(Icons.email_outlined),
-                      onChanged: (value) {},
-                    ),
-                    SizedBox(height: 16.0),
-                    AppTextFields(
-                      controller: _passwordController,
-                      obscureText: true,
-                      text: 'Password',
-                      hintText: '******',
-                      icon: Icon(Icons.password),
-                      onChanged: (value) {},
-                    ),
-                    SizedBox(height: 32.0),
-                    TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(40.0),
-                          ),
-                        ),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(20)),
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.green),
-                      ),
-                      onPressed: _isLoading ? null : _login,
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 25.0,
-                              width: 25.0,
-                              child: CircularProgressIndicator(
-                                color: AppColors.white,
-                              ),
-                            )
-                          : const Text(
-                              'Sign In',
-                              style: TextStyle(color: AppColors.white),
-                            ),
-                    ),
-                    // SizedBox(height: 16.0),
-                    Text(
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  AppTextFields(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    text: 'Email',
+                    hintText: 'yourname@email.com',
+                    icon: const Icon(Icons.email_outlined),
+                    onChanged: (value) {},
+                  ),
+                  const SizedBox(height: 16.0),
+                  AppTextFields(
+                    controller: _passwordController,
+                    obscureText: true,
+                    text: 'Password',
+                    hintText: '******',
+                    icon: const Icon(Icons.password),
+                    onChanged: (value) {},
+                  ),
+                  const SizedBox(height: 4.0),
+                  Center(
+                    child: Text(
                       _errorMessage,
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     ),
-                    Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/register');
-                        },
-                        child: Text(
-                          'New member? Sign Up',
+                  ),
+                  const SizedBox(height: 16.0),
+
+                  TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(40.0),
+                        ),
+                      ),
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(20)),
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.green),
+                    ),
+                    onPressed: _isLoading ? null : _login,
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 17.0,
+                            width: 17.0,
+                            child: CircularProgressIndicator(
+                              color: AppColors.white,
+                            ),
+                          )
+                        : const Text(
+                            'Sign In',
+                            style: TextStyle(color: AppColors.white),
+                          ),
+                  ),
+                  // SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
+
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      child: RichText(
+                        text: const TextSpan(
+                          text: 'New member? ',
                           style: TextStyle(color: AppColors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Sign Up',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.green,
+                                )),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
