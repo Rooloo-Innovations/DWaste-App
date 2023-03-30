@@ -1,5 +1,7 @@
 import 'package:dwaste/models/app_colors.dart';
 import 'package:dwaste/screens/dashboard.dart';
+import 'package:dwaste/screens/reward_received_screen.dart';
+import 'package:dwaste/screens/scan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -16,14 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     const Dashboard(),
-    const Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    const Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    ScanScreen(),
+    const RewardsPage(),
     const Text(
       'Index 3: Settings',
       style: optionStyle,

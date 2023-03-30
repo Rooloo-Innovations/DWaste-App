@@ -37,9 +37,9 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
                         Text(
                           "Hello Maria",
                           style: TextStyle(
@@ -159,13 +159,9 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 128,
-                              width: 128,
-                              child: Image.asset(
-                                "assets/images/progress_ball.png",
-                                fit: BoxFit.cover,
-                              ),
+                            Image.asset(
+                              "assets/images/progress_ball.png",
+                              fit: BoxFit.contain,
                             )
                           ],
                         ),

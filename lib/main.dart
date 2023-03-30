@@ -1,13 +1,18 @@
+import 'package:camera/camera.dart';
 import 'package:dwaste/screens/home_screen.dart';
 import 'package:dwaste/screens/login_screen.dart';
 import 'package:dwaste/screens/register_screen.dart';
+import 'package:dwaste/screens/startup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'models/app_colors.dart';
 
+List<CameraDescription> cameras = [];
+
 void main() async {
   await initHiveForFlutter();
+  cameras = await availableCameras();
   runApp(const MyApp());
 }
 
@@ -49,9 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         primaryColor: AppColors.yellow,
       ),
-      initialRoute: '/home',
+      initialRoute: '/',
       routes: {
-        '/': (context) => CreateAccountScreen(),
+        '/': (context) => StartupScreen(),
         '/login': (context) => LoginScreen(),
         '/register': (context) => CreateAccountScreen(),
         '/home': (context) => HomeScreen(),
