@@ -1,6 +1,8 @@
 import 'package:dwaste/models/app_colors.dart';
+import 'package:dwaste/screens/categories_screen.dart';
 import 'package:dwaste/screens/dashboard.dart';
-import 'package:dwaste/screens/reward_received_screen.dart';
+import 'package:dwaste/screens/profile_screen.dart';
+// import 'package:dwaste/screens/reward_received_screen.dart';
 import 'package:dwaste/screens/scan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,11 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     const Dashboard(),
     ScanScreen(),
-    const RewardsPage(),
-    const Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
+    // const RewardsPage(),
+    CategoriesScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -40,24 +40,42 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  ColorFilter returnLogoColor() {
+    if (_selectedIndex == 3 || _selectedIndex == 2) {
+      return const ColorFilter.mode(AppColors.green, BlendMode.srcIn);
+    } else {
+      return const ColorFilter.mode(AppColors.white, BlendMode.srcIn);
+    }
+  }
+
+  Color returnAppBarBGColor() {
+    if (_selectedIndex == 3 || _selectedIndex == 2) {
+      return AppColors.white;
+    } else {
+      return Colors.transparent;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.green, size: 28),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: AppColors.green, size: 28),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
+        automaticallyImplyLeading: false,
+        leading: null,
         centerTitle: true,
         toolbarHeight: 72,
         title: SvgPicture.asset(
           'assets/images/icons/DwasteAppBarLogo.svg',
           width: 42,
           height: 42,
-          colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+          colorFilter: returnLogoColor(),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: returnAppBarBGColor(),
         elevation: 0, // 1
       ),
       body: Center(

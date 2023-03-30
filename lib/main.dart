@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         primaryColor: AppColors.yellow,
       ),
-      initialRoute: '/',
+      initialRoute: '/home',
       routes: {
         '/': (context) => StartupScreen(),
         '/login': (context) => LoginScreen(),

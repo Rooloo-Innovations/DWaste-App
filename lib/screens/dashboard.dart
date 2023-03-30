@@ -37,17 +37,9 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Hello Maria",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.white,
-                            fontSize: 16,
-                          ),
-                        ),
+                      children: [
                         Text("Let's recycle",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
