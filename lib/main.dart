@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:dwaste/screens/home_screen.dart';
 import 'package:dwaste/screens/login_screen.dart';
 import 'package:dwaste/screens/register_screen.dart';
+import 'package:dwaste/screens/reward_received_screen.dart';
 import 'package:dwaste/screens/startup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -60,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         '/login': (context) => LoginScreen(),
         '/register': (context) => CreateAccountScreen(),
         '/home': (context) => HomeScreen(),
+        '/reward': (context) => RewardScreen(),
       },
     );
   }

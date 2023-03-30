@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     const Dashboard(),
     ScanScreen(),
-    const RewardsPage(),
+    const RewardScreen(),
     const Text(
       'Index 3: Settings',
       style: optionStyle,

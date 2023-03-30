@@ -2,6 +2,11 @@ import 'package:dwaste/components/dashboard_item.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/gql_client.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -11,7 +16,86 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final double _consumedData = 8 / 10;
+  double _consumedData = 0 / 10;
+  int progress = 0;
+  late String name;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchUser();
+    fetchProgress();
+  }
+
+  void fetchUser() async {
+    final GraphQLClient client = await getClient();
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setString('access_token', '');
+    String? token = prefs.getString('access_token');
+
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
+
+    print(decodedToken);
+
+    final QueryOptions options = QueryOptions(document: gql(r'''
+query User($userId: String!) {
+  user(userID: $userId) {
+    success
+    message
+    users {
+      fullName
+    }
+  }
+}
+    '''), variables: {"userId": decodedToken['userID']});
+
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      throw result.exception.toString();
+    } else {
+      setState(() {
+        name = result.data!['user']['users'][0]['fullName'];
+      });
+    }
+  }
+
+  void fetchProgress() async {
+    final GraphQLClient client = await getClient();
+
+    final QueryOptions options = QueryOptions(
+      document: gql(r'''
+query FetchRewards {
+  fetchRewards {
+    success
+    message
+    rewards {
+      dailyRewards
+    }
+  }
+}
+    '''),
+    );
+
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      throw result.exception.toString();
+    } else {
+      final int dailyRewards =
+          result.data!['fetchRewards']['rewards']['dailyRewards'];
+
+      print(result.data);
+
+      setState(() {
+        progress = (dailyRewards / 50).round();
+        _consumedData = progress / 10;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,16 +123,16 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          "Hello Maria",
-                          style: TextStyle(
+                          "Hello $name",
+                          style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             color: AppColors.white,
                             fontSize: 16,
                           ),
                         ),
-                        Text("Let's recycle",
+                        const Text("Let's recycle",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.white,
@@ -132,9 +216,9 @@ class _DashboardState extends State<Dashboard> {
                                 const SizedBox(
                                   height: 16,
                                 ),
-                                const Text(
-                                  "4/10 items",
-                                  style: TextStyle(
+                                Text(
+                                  "$progress/10 items",
+                                  style: const TextStyle(
                                     color: AppColors.black,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
