@@ -1,7 +1,7 @@
 import 'package:dwaste/models/app_colors.dart';
 import 'package:dwaste/screens/product_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -16,7 +16,7 @@ class ProductCard extends StatelessWidget {
   final String name;
   final int price;
   final onTap;
-
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,10 +32,11 @@ class ProductCard extends StatelessWidget {
             BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 6),
           ], color: AppColors.white, borderRadius: BorderRadius.circular(10)),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
+                E xpanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: SizedBox(
@@ -54,49 +55,84 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 12,
+                ),
+                Text(
+                  capitalize(name),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.black,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  softWrap: true,
+                  maxLines: 4,
+                ),
+                const SizedBox(
+                  height: 8,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        softWrap: true,
-                        maxLines: 2,
-                      ),
+                    SvgPicture.asset(
+                      'assets/images/icons/DIcon.svg',
+                      width: 14,
+                      height: 14,
+                      colorFilter: const ColorFilter.mode(
+                          AppColors.green, BlendMode.srcIn),
                     ),
                     const SizedBox(
-                      width: 10,
+                      width: 2,
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/icons/DIcon.svg',
-                          width: 16,
-                          height: 16,
-                          colorFilter: const ColorFilter.mode(
-                              AppColors.green, BlendMode.srcIn),
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          price.toString(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.green),
-                        ),
-                      ],
+                    Text(
+                      price.toString(),
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.green),
                     ),
                   ],
                 ),
+
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Expanded(
+                //       child: Text(
+                //         name,
+                //         style: TextStyle(
+                //           fontSize: 14,
+                //           color: AppColors.black,
+                //           fontWeight: FontWeight.w600,
+                //         ),
+                //         softWrap: true,
+                //         maxLines: 2,
+                //       ),
+                //     ),
+                //     const SizedBox(
+                //       width: 10,
+                //     ),
+                //     Row(
+                //       children: [
+                //         SvgPicture.asset(
+                //           'assets/images/icons/DIcon.svg',
+                //           width: 16,
+                //           height: 16,
+                //           colorFilter: const ColorFilter.mode(
+                //               AppColors.green, BlendMode.srcIn),
+                //         ),
+                //         const SizedBox(
+                //           width: 2,
+                //         ),
+                //         Text(
+                //           price.toString(),
+                //           style: TextStyle(
+                //               fontSize: 16,
+                //               fontWeight: FontWeight.w700,
+                //               color: AppColors.green),
+                //         ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),

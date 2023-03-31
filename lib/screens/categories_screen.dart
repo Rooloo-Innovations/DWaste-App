@@ -1,5 +1,8 @@
+import 'package:dwaste/components/app_bar.dart';
+import 'package:dwaste/components/bottom_navbar.dart';
 import 'package:dwaste/components/category_card.dart';
 import 'package:dwaste/models/app_colors.dart';
+import 'package:dwaste/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -10,10 +13,23 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => HomeScreen(screenIndex: index),
+    ));
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+      appBar: buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Column(
@@ -74,6 +90,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           ],
         ),
       ),
+      bottomNavigationBar:
+          BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
     );
   }
 }
