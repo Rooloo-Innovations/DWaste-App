@@ -1,6 +1,7 @@
+import 'package:dwaste/components/bottom_navbar.dart';
 import 'package:dwaste/models/app_colors.dart';
+import 'package:dwaste/screens/categories_screen.dart';
 import 'package:dwaste/screens/dashboard.dart';
-import 'package:dwaste/screens/product_list_screen.dart';
 import 'package:dwaste/screens/profile_screen.dart';
 // import 'package:dwaste/screens/reward_received_screen.dart';
 import 'package:dwaste/screens/scan_screen.dart';
@@ -8,25 +9,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
+  const HomeScreen({
+    Key? key,
+    this.screenIndex = 0,
+  }) : super(key: key);
+  final int screenIndex;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
-    const Dashboard(),
-    ScanScreen(),
-    // const RewardsPage(),
-    // CategoriesScreen(),
-    ProductListScreen(),
-    const ProfileScreen(),
-  ];
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _selectedIndex=widget.screenIndex;
+  }
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -57,6 +56,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  static final List<Widget> _widgetOptions = <Widget>[
+    const Dashboard(),
+    ScanScreen(),
+    // const RewardsPage(),
+    const CategoriesScreen(),
+    // ProductListScreen(),
+    const ProfileScreen(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,60 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        backgroundColor: AppColors.white,
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 38,
-              child: SvgPicture.asset(
-                'assets/images/icons/HomeIcon.svg',
-                width: 28,
-                height: 28,
-                colorFilter: returnIconColor(0),
-              ),
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 38,
-              child: SvgPicture.asset(
-                'assets/images/icons/ScanIcon.svg',
-                width: 28,
-                height: 28,
-                colorFilter: returnIconColor(1),
-              ),
-            ),
-            label: 'Scan',
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 38,
-              child: SvgPicture.asset(
-                'assets/images/icons/CartIcon.svg',
-                width: 28,
-                height: 28,
-                colorFilter: returnIconColor(2),
-              ),
-            ),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 38,
-              child: SvgPicture.asset('assets/images/icons/DIcon.svg',
-                  width: 28, height: 28, colorFilter: returnIconColor(3)),
-            ),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar:
+          BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
     );
   }
 }
