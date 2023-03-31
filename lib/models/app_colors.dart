@@ -9,4 +9,5 @@ class AppColors {
   static const Color grey = Color(0xff939393);
   static const Color iconGrey = Color(0xff818181);
   static const Color green = Color(0xff35B228);
+  static const Color backgroundGreen = Color(0xffDEF7DB);
 }
