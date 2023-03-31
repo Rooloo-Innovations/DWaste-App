@@ -3,8 +3,6 @@ import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/gql_client.dart';
 
@@ -31,25 +29,15 @@ class _DashboardState extends State<Dashboard> {
   void fetchUser() async {
     final GraphQLClient client = await getClient();
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // await prefs.setString('access_token', '');
-    String? token = prefs.getString('access_token');
-
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
-
-    print(decodedToken);
-
     final QueryOptions options = QueryOptions(document: gql(r'''
-query User($userId: String!) {
-  user(userID: $userId) {
-    success
-    message
+query UserDetails {
+  userDetails {
     users {
       fullName
     }
   }
 }
-    '''), variables: {"userId": decodedToken['userID']});
+    '''));
 
     final QueryResult result = await client.query(options);
 
@@ -57,7 +45,7 @@ query User($userId: String!) {
       throw result.exception.toString();
     } else {
       setState(() {
-        name = result.data!['user']['users'][0]['fullName'];
+        name = result.data!['userDetails']['users'][0]['fullName'];
       });
     }
   }

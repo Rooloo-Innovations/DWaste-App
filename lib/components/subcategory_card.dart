@@ -1,4 +1,5 @@
 import 'package:dwaste/models/app_colors.dart';
+import 'package:dwaste/screens/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class SubCategoryCard extends StatelessWidget {
@@ -18,9 +19,9 @@ class SubCategoryCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8),
       child: GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     // builder: (context) => const RewardScreen(),
-          //     ));
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const ProductListScreen(),
+          ));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16.0),

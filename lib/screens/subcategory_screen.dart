@@ -5,6 +5,8 @@ import 'package:dwaste/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../components/app_bar.dart';
+
 class SubCategoryScreen extends StatefulWidget {
   const SubCategoryScreen({Key? key}) : super(key: key);
 
@@ -14,6 +16,7 @@ class SubCategoryScreen extends StatefulWidget {
 
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
   int _selectedIndex = 2;
+
   void _onItemTapped(int index) {
     Navigator.of(context).pop();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -28,23 +31,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.green, size: 28),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        toolbarHeight: 72,
-        title: SvgPicture.asset(
-          'assets/images/icons/DwasteAppBarLogo.svg',
-          width: 42,
-          height: 42,
-          colorFilter: ColorFilter.mode(AppColors.green, BlendMode.srcIn),
-        ),
-        backgroundColor: AppColors.white,
-        elevation: 0, // 1
-      ),
+      appBar: buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Column(
@@ -55,25 +42,25 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                   SubCategoryCard(
                     title: "Electronics",
                     iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
+                    "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
                     id: "640c295278809f825d23f26e",
                   ),
                   SubCategoryCard(
                     title: "Sports & Fitness",
                     iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
+                    "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
                     id: "640c295278809f825d23f26e",
                   ),
                   SubCategoryCard(
                     title: "Books",
                     iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
+                    "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
                     id: "640c295278809f825d23f26e",
                   ),
                   SubCategoryCard(
                     title: "Sports & Fitness",
                     iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
+                    "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
                     id: "640c295278809f825d23f26e",
                   ),
                 ],
@@ -83,7 +70,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
         ),
       ),
       bottomNavigationBar:
-          BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
+      BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
     );
   }
 }

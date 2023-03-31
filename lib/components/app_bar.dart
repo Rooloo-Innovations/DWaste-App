@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../models/app_colors.dart';
 
-AppBar buildAppBar() {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    iconTheme: const IconThemeData(
-      color: AppColors.green,
+    leading: IconButton(
+      icon: const Icon(Icons.arrow_back, color: AppColors.green, size: 28),
+      onPressed: () => Navigator.of(context).pop(),
     ),
+    automaticallyImplyLeading: false,
     centerTitle: true,
-    title: Image.asset('assets/images/logo_horizontal.png'),
+    toolbarHeight: 72,
+    title: SvgPicture.asset(
+      'assets/images/icons/DwasteAppBarLogo.svg',
+      width: 42,
+      height: 42,
+      colorFilter: ColorFilter.mode(AppColors.green, BlendMode.srcIn),
+    ),
+    backgroundColor: AppColors.white,
+    elevation: 0, // 1
   );
 }
+
+
