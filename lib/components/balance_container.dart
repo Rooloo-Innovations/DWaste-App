@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BalanceContainer extends StatelessWidget {
-  const BalanceContainer({
-    super.key,
-  });
+  const BalanceContainer({super.key, this.denrBalance});
+
+  final denrBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,8 @@ class BalanceContainer extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         color: AppColors.white),
                   ),
-                  const Text(
-                    "DENR 360,896",
+                  Text(
+                    "DENR $denrBalance",
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -84,7 +84,7 @@ class BalanceContainer extends StatelessWidget {
                   )
                 ],
               ),
-              Image.asset('assets/images/balance_earth.png'),
+              Expanded(child: Image.asset('assets/images/balance_earth.png')),
             ],
           ),
         ),

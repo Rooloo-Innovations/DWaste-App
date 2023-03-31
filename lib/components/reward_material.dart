@@ -5,7 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 class RewardMaterial extends StatelessWidget {
   const RewardMaterial({
     super.key,
+    required this.productType,
+    required this.scannedOn,
+    required this.pointsEarned,
   });
+
+  final productType;
+  final scannedOn;
+  final pointsEarned;
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +31,18 @@ class RewardMaterial extends StatelessWidget {
                   fit: BoxFit.fill,
                 ),
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Plastic",
+                    "$productType",
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: AppColors.black),
                   ),
                   Text(
-                    "Today, at 11:48 PM",
+                    "$scannedOn",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -55,7 +62,7 @@ class RewardMaterial extends StatelessWidget {
                     color: AppColors.green),
               ),
               const SizedBox(
-                width: 8,
+                width: 2,
               ),
               SvgPicture.asset(
                 'assets/images/icons/DIcon.svg',
@@ -67,9 +74,9 @@ class RewardMaterial extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              const Text(
-                "23.25",
-                style: TextStyle(
+              Text(
+                "$pointsEarned",
+                style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: AppColors.green),

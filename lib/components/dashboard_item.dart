@@ -18,7 +18,7 @@ class DashboardItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(18.0),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -50,6 +50,7 @@ dependencies:
   loader_overlay: ^2.1.0
   flutter_spinkit: ^5.1.0
   jwt_decoder: ^2.0.1
+  accordion: ^2.5.1
 
 
 dev_dependencies:

@@ -1,6 +1,6 @@
 import 'package:dwaste/models/app_colors.dart';
-import 'package:dwaste/screens/categories_screen.dart';
 import 'package:dwaste/screens/dashboard.dart';
+import 'package:dwaste/screens/product_list_screen.dart';
 import 'package:dwaste/screens/profile_screen.dart';
 // import 'package:dwaste/screens/reward_received_screen.dart';
 import 'package:dwaste/screens/scan_screen.dart';
@@ -22,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const Dashboard(),
     ScanScreen(),
     // const RewardsPage(),
-    CategoriesScreen(),
+    // CategoriesScreen(),
+    ProductListScreen(),
     const ProfileScreen(),
   ];
 

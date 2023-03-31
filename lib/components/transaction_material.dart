@@ -2,20 +2,20 @@ import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TransactionMaterial extends StatelessWidget {
-  const TransactionMaterial({Key? key}) : super(key: key);
+class TransactionCard extends StatelessWidget {
+  const TransactionCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               Container(
-                margin: EdgeInsets.only(right: 12),
+                margin: const EdgeInsets.only(right: 12),
                 child: SizedBox(
                   height: 58,
                   width: 58,
@@ -26,16 +26,16 @@ class TransactionMaterial extends StatelessWidget {
                         color: AppColors.backgroundColor,
                       ),
                       child: Image.asset(
-                        "assets/images/headphones .png",
+                        "assets/images/headphones.png",
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Text(
                     "Plastic",
                     style: TextStyle(

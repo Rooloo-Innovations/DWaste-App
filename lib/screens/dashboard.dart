@@ -18,7 +18,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   double _consumedData = 0 / 10;
   int progress = 0;
-  late String name;
+  String name = "";
 
   @override
   void initState() {
