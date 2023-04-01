@@ -9,13 +9,13 @@ class ProductCard extends StatelessWidget {
     required this.image,
     required this.name,
     required this.price,
-    this.onTap,
+    required this.product,
   });
 
   final String image;
   final String name;
   final int price;
-  final onTap;
+  final product;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ProductCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const ProductScreen(),
+            builder: (context) => ProductScreen(product: product),
           ));
         },
         child: Container(

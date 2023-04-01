@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AppTextFields extends StatelessWidget {
   AppTextFields({
     required this.text,
-    required this.icon,
+    this.icon,
     this.hintText,
     this.validator,
     required this.onChanged,
@@ -14,7 +14,7 @@ class AppTextFields extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
   });
   final String text;
-  final Icon icon;
+  final icon;
   final hintText;
   final validator;
   final keyboardType;
@@ -48,7 +48,7 @@ class AppTextFields extends StatelessWidget {
                 ),
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.black12),
-            suffixIcon: icon,
+            suffixIcon: icon == "" ? Container() : icon,
             suffixIconColor: AppColors.grey,
             contentPadding: const EdgeInsets.only(top: 35.0, left: 20.0),
           ),

@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     super.key,
-    required this.id,
+    required this.subcategories,
     required this.title,
     required this.iconURL,
   });
-  final String id;
+  final List subcategories;
   final String title;
   final String iconURL;
   @override
@@ -17,7 +17,7 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const SubCategoryScreen(),
+          builder: (context) => SubCategoryScreen(subcategories: subcategories),
         ));
       },
       child: ClipRRect(

@@ -20,7 +20,9 @@ class SubCategoryCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const ProductListScreen(),
+            builder: (context) => ProductListScreen(
+              subCategoryId: id,
+            ),
           ));
         },
         child: ClipRRect(
