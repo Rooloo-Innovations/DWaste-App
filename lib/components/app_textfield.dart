@@ -27,27 +27,32 @@ class AppTextFields extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          text,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
-        ),
+        text == ''
+            ? const SizedBox(
+                height: 0,
+              )
+            : Text(
+                text,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 14.0),
+              ),
         const SizedBox(
           height: 12.0,
         ),
         TextFormField(
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xff848484)),
+                borderSide: const BorderSide(color: Color(0xff848484)),
                 borderRadius: BorderRadius.circular(40.0)
                 //  when the TextFormField in unfocused
                 ),
             enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xffDDDDDD)),
+                borderSide: const BorderSide(color: Color(0xffDDDDDD)),
                 borderRadius: BorderRadius.circular(40.0)
                 //  when the TextFormField in unfocused
                 ),
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.black12),
+            hintStyle: const TextStyle(color: Colors.black12),
             suffixIcon: icon == "" ? Container() : icon,
             suffixIconColor: AppColors.grey,
             contentPadding: const EdgeInsets.only(top: 35.0, left: 20.0),

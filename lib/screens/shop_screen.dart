@@ -245,6 +245,8 @@ query AllProductsByCategory($subCategoryId: String!) {
                   name: productsList[index]['name'],
                   price: productsList[index]['discountedPrice'],
                   image: productsList[index]['imageURL'],
+                  product: productsList[index]['id'],
+
                 ),
               ),
             ),

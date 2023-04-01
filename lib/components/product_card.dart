@@ -15,7 +15,6 @@ class ProductCard extends StatelessWidget {
   final String image;
   final String name;
   final int price;
-  final onTap;
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
   final product;
 
