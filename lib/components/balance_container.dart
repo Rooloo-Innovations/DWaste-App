@@ -2,6 +2,8 @@ import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../screens/withdraw_screen.dart';
+
 class BalanceContainer extends StatelessWidget {
   const BalanceContainer({super.key, this.denrBalance});
 
@@ -66,7 +68,13 @@ class BalanceContainer extends StatelessWidget {
                   SizedBox(
                     width: 160,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const WithdrawScreen(),
+                          ),
+                        );
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                             AppColors.white.withOpacity(0.8)),

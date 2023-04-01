@@ -16,12 +16,40 @@ class ShopScreen extends StatefulWidget {
 
 class _ShopScreenState extends State<ShopScreen> {
   List productsList = [];
+  List categoryList = [];
+  String name = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    fetchUser();
     fetchProductsbyCategoryId();
+    fetchCategories();
+  }
+
+  void fetchUser() async {
+    final GraphQLClient client = await getClient();
+
+    final QueryOptions options = QueryOptions(document: gql(r'''
+query UserDetails {
+  userDetails {
+    users {
+      fullName
+    }
+  }
+}
+    '''));
+
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      throw result.exception.toString();
+    } else {
+      setState(() {
+        name = result.data!['userDetails']['users'][0]['fullName'];
+      });
+    }
   }
 
   void fetchProductsbyCategoryId() async {
@@ -55,6 +83,40 @@ query AllProductsByCategory($subCategoryId: String!) {
     }
   }
 
+  void fetchCategories() async {
+    final GraphQLClient client = await getClient();
+
+    final QueryOptions options = QueryOptions(document: gql(r'''
+query AllCategories {
+  allCategories {
+    success
+    message
+    categories {
+      id
+      name
+      iconURL
+      subcategories {
+        id
+        name
+        iconURL
+      }
+    }
+  }
+}
+    '''));
+
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      throw result.exception.toString();
+    } else {
+      setState(() {
+        categoryList = result.data!['allCategories']['categories'];
+        print(categoryList);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,16 +125,16 @@ query AllProductsByCategory($subCategoryId: String!) {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         children: [
           const SizedBox(
-            height: 120,
+            height: 80,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hello Maria",
+                    "Hello $name",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       color: AppColors.black,
@@ -158,38 +220,14 @@ query AllProductsByCategory($subCategoryId: String!) {
             child: Expanded(
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: const [
-                  ShopScreenCategoryBox(
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
-                    title: "Electronics",
+                children: List<Widget>.generate(
+                  categoryList.length,
+                  (index) => ShopScreenCategoryBox(
+                    subcategories: categoryList[index]['subcategories'],
+                    iconURL: categoryList[index]['iconURL'],
+                    title: categoryList[index]['name'],
                   ),
-                  ShopScreenCategoryBox(
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                    title: "Sports & Fitness",
-                  ),
-                  ShopScreenCategoryBox(
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
-                    title: "Fashion",
-                  ),
-                  ShopScreenCategoryBox(
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
-                    title: "Electronics",
-                  ),
-                  ShopScreenCategoryBox(
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                    title: "Sports & Fitness",
-                  ),
-                  ShopScreenCategoryBox(
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
-                    title: "Fashion",
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -246,7 +284,6 @@ query AllProductsByCategory($subCategoryId: String!) {
                   price: productsList[index]['discountedPrice'],
                   image: productsList[index]['imageURL'],
                   product: productsList[index]['id'],
-
                 ),
               ),
             ),

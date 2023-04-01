@@ -1,9 +1,12 @@
+import 'package:dwaste/components/app_bar.dart';
 import 'package:dwaste/components/category_card.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../components/bottom_navbar.dart';
 import '../models/gql_client.dart';
+import 'home_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
@@ -13,8 +16,21 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  List categoryList = [];
+  int _selectedIndex = 2;
+  void _onItemTapped(int index) {
+    // setState(() {
+    //   _selectedIndex = index;
+    // });
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => HomeScreen(screenIndex: index),
+    ));
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
+  List categoryList = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -59,6 +75,9 @@ query AllCategories {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: buildAppBar(context),
+      bottomNavigationBar:
+          BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
       backgroundColor: AppColors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
