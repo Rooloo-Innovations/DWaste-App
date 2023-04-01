@@ -17,8 +17,10 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   int _selectedIndex = 2;
-
   void _onItemTapped(int index) {
+    // setState(() {
+    //   _selectedIndex = index;
+    // });
     Navigator.of(context).pop();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => HomeScreen(screenIndex: index),
@@ -29,7 +31,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   List categoryList = [];
-
   @override
   void initState() {
     // TODO: implement initState
