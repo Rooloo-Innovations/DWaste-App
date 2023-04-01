@@ -1,11 +1,25 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:dwaste/components/app_bar.dart';
 import 'package:dwaste/components/app_textfield.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+import '../models/gql_client.dart';
 
 class OrderScreen extends StatefulWidget {
-  const OrderScreen({super.key});
+  const OrderScreen(
+      {super.key,
+      this.productId,
+      this.productName,
+      this.productPrice,
+      this.productImage});
+
+  final productId;
+  final productName;
+  final productPrice;
+  final productImage;
 
   @override
   _OrderScreenState createState() => _OrderScreenState();
@@ -13,6 +27,8 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _currentStep = 0;
+
+  String errorMessage = "";
 
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
@@ -26,6 +42,77 @@ class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController _itemController = TextEditingController();
   final TextEditingController _subtotalController = TextEditingController();
   final TextEditingController _totalController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // createOrder();
+  }
+
+  Future<bool> createOrder() async {
+    final GraphQLClient client = await getClient();
+
+    final MutationOptions options = MutationOptions(document: gql(r'''
+mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $address: AddOrderAddress!) {
+  createNewOrder(productID: $productId, amount: $amount, quantity: $quantity, address: $address) {
+    success
+    message
+    orders {
+      id
+      userID
+      productID
+      amount
+      quantity
+      address {
+        fullName
+        phoneNumber
+        street
+        apartment
+        city
+        state
+        pinCode
+      }
+      paymentStatus
+      deliveryStatus
+      dispatchStatus
+      orderPlacedOn
+    }
+  }
+}
+    '''), variables: {
+      "productId": widget.productId,
+      "amount": widget.productPrice,
+      "quantity": 1,
+      "address": {
+        "fullName": _fullNameController.text,
+        "phoneNumber": _phoneNumberController.text,
+        "street": _streetAddressController.text,
+        "apartment": _apartmentController.text,
+        "state": _stateController.text,
+        "city": _cityController.text,
+        "pinCode": _postalCodeController.text
+      }
+    });
+
+    final QueryResult result = await client.mutate(options);
+
+    print("Im Here");
+
+    if (result.hasException) {
+      throw result.exception.toString();
+    } else {
+      print(result.data);
+      // setState(() {
+      bool orderStatus = result.data!['createNewOrder']['success'];
+      bool orderResponse = result.data!['createNewOrder']['message'];
+
+      if (!orderStatus) {}
+
+      return orderStatus;
+      // });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,6 +293,13 @@ class _OrderScreenState extends State<OrderScreen> {
           hintText: 'Postal code',
           onChanged: (value) {},
         ),
+        errorMessage != ""
+            ? Text(
+                errorMessage,
+                style: const TextStyle(color: AppColors.red),
+                textAlign: TextAlign.center,
+              )
+            : const SizedBox(height: 0.0),
         const SizedBox(height: 16.0),
         TextButton(
           style: ButtonStyle(
@@ -218,9 +312,28 @@ class _OrderScreenState extends State<OrderScreen> {
             backgroundColor: MaterialStateProperty.all(AppColors.green),
           ),
           onPressed: () {
-            setState(() {
-              _currentStep = 1;
-            });
+            if (_fullNameController.text.isEmpty) {
+              errorMessage = "Full Name required";
+            } else if (_phoneNumberController.text.isEmpty) {
+              errorMessage = "Phone Number required";
+            } else if (_streetAddressController.text.isEmpty) {
+              errorMessage = "Street Address required";
+            } else if (_apartmentController.text.isEmpty) {
+              errorMessage = "Apartment/Floor/Building required";
+            } else if (_cityController.text.isEmpty) {
+              errorMessage = "City required";
+            } else if (_stateController.text.isEmpty) {
+              errorMessage = "State/Province required";
+            } else if (_postalCodeController.text.isEmpty) {
+              errorMessage = "Postal required";
+            } else {
+              errorMessage = "";
+
+              setState(() {
+                _currentStep = 1;
+              });
+            }
+            setState(() {});
           },
           child: const Text(
             'Continue',
@@ -252,7 +365,7 @@ class _OrderScreenState extends State<OrderScreen> {
         Text(_countryController.text),
         const SizedBox(height: 16),
         const Text(
-          'Cart items:',
+          'Cart item',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 18,
@@ -272,14 +385,20 @@ class _OrderScreenState extends State<OrderScreen> {
               SizedBox(
                 height: 120,
                 child: Image.network(
-                    "https://dwaste.knowjamil.com/uploads?image=iphone_13.png"),
+                  widget.productImage,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return const Image(
+                        image: AssetImage('assets/images/placeholder.png'));
+                  },
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "The everyday headphones",
-                    style: TextStyle(
+                  Text(
+                    widget.productName,
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
@@ -288,18 +407,18 @@ class _OrderScreenState extends State<OrderScreen> {
                     children: [
                       SvgPicture.asset(
                         'assets/images/icons/DIcon.svg',
-                        width: 20,
-                        height: 20,
+                        width: 16,
+                        height: 16,
                         colorFilter: const ColorFilter.mode(
                             AppColors.green, BlendMode.srcIn),
                       ),
                       const SizedBox(
                         width: 3,
                       ),
-                      const Text(
-                        "54",
+                      Text(
+                        widget.productPrice.toString(),
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: AppColors.green),
                       ),
@@ -338,8 +457,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 const SizedBox(
                   width: 3,
                 ),
-                const Text(
-                  "54",
+                Text(
+                  widget.productPrice.toString(),
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -377,7 +496,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   width: 3,
                 ),
                 const Text(
-                  "54",
+                  "0",
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -419,11 +538,9 @@ class _OrderScreenState extends State<OrderScreen> {
           ],
         ),
         const SizedBox(height: 8),
-        Container(
-          height: 1,
-          decoration: const BoxDecoration(
-            color: AppColors.grey,
-          ),
+        DottedLine(
+          dashColor: Colors.grey,
+          dashLength: 2.0,
         ),
         const SizedBox(height: 8),
         Row(
@@ -449,9 +566,9 @@ class _OrderScreenState extends State<OrderScreen> {
                 const SizedBox(
                   width: 3,
                 ),
-                const Text(
-                  "59",
-                  style: TextStyle(
+                Text(
+                  widget.productPrice.toString(),
+                  style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: AppColors.green),
@@ -473,8 +590,9 @@ class _OrderScreenState extends State<OrderScreen> {
             backgroundColor: MaterialStateProperty.all(AppColors.green),
           ),
           onPressed: () {
+            createOrder();
             setState(() {
-              _currentStep = 2;
+              // _currentStep = 2;
             });
           },
           child: const Text(

@@ -217,7 +217,12 @@ query AllProductsByProductID($productId: String!) {
                   text: 'Buy Now',
                   onPressed: () => {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const OrderScreen(),
+                      builder: (context) => OrderScreen(
+                        productId: product[0]['id'],
+                        productName: product[0]['name'],
+                        productPrice: product[0]['discountedPrice'],
+                        productImage: product[0]['imageURL'],
+                      ),
                     ))
                   },
                 ),
