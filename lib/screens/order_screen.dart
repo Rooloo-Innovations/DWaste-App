@@ -1,5 +1,6 @@
 import 'package:dwaste/components/app_bar.dart';
 import 'package:dwaste/components/app_textfield.dart';
+import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -48,6 +49,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget _buildProgressTimeline() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
           onTap: () {
@@ -57,6 +59,15 @@ class _OrderScreenState extends State<OrderScreen> {
           },
           child: _buildStepCircle('1', 'Address', _currentStep >= 0),
         ),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: _currentStep > 0 ? AppColors.green : AppColors.grey,
+            ),
+            height: 1.5,
+            margin: EdgeInsets.only(bottom: 16),
+          ),
+        ),
         GestureDetector(
           onTap: () {
             setState(() {
@@ -64,6 +75,15 @@ class _OrderScreenState extends State<OrderScreen> {
             });
           },
           child: _buildStepCircle('2', 'Order Summary', _currentStep >= 1),
+        ),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: _currentStep > 1 ? AppColors.green : AppColors.grey,
+            ),
+            height: 1.5,
+            margin: EdgeInsets.only(bottom: 16),
+          ),
         ),
         GestureDetector(
           onTap: () {
@@ -81,24 +101,32 @@ class _OrderScreenState extends State<OrderScreen> {
     return Column(
       children: [
         Container(
-          width: 50,
-          height: 50,
+          width: 32,
+          height: 32,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isActive ? Colors.blue : Colors.grey[300],
+            color:
+                isActive ? AppColors.green.withOpacity(0.2) : AppColors.white,
+            border: Border.all(
+              color: AppColors.green,
+              width: 2,
+            ),
           ),
           child: Center(
             child: Text(
               number,
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.green,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
         const SizedBox(height: 8),
-        Text(label),
+        Text(
+          label,
+          style: TextStyle(fontSize: 12),
+        ),
       ],
     );
   }
@@ -120,77 +148,71 @@ class _OrderScreenState extends State<OrderScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Enter shipping address'),
-        const SizedBox(height: 16),
         AppTextFields(
           controller: _fullNameController,
           keyboardType: TextInputType.text,
-          text: 'Full Name',
-          hintText: 'John Doe',
+          text: '',
+          hintText: 'Full Name (Required)',
           onChanged: (value) {},
         ),
         AppTextFields(
           controller: _phoneNumberController,
           keyboardType: TextInputType.text,
-          text: 'Phone Number',
-          hintText: 'Enter phone number with country code',
+          text: '',
+          hintText: 'Phone Number (Required)',
           onChanged: (value) {},
         ),
         AppTextFields(
           controller: _streetAddressController,
           keyboardType: TextInputType.text,
-          text: 'Street Address',
-          hintText: 'Enter Street Address',
+          text: '',
+          hintText: 'Street Address',
           onChanged: (value) {},
         ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _apartmentController,
-          decoration: const InputDecoration(
-            labelText: 'Apartment/floor/suite',
-            border: OutlineInputBorder(),
-          ),
+        AppTextFields(
+          controller: _streetAddressController,
+          keyboardType: TextInputType.text,
+          text: '',
+          hintText: 'Apartment / floor / suite / building',
+          onChanged: (value) {},
         ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _cityController,
-          decoration: const InputDecoration(
-            labelText: 'City',
-            border: OutlineInputBorder(),
-          ),
+        AppTextFields(
+          controller: _streetAddressController,
+          keyboardType: TextInputType.text,
+          text: '',
+          hintText: 'City',
+          onChanged: (value) {},
         ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _stateController,
-          decoration: const InputDecoration(
-            labelText: 'State',
-            border: OutlineInputBorder(),
-          ),
+        AppTextFields(
+          controller: _streetAddressController,
+          keyboardType: TextInputType.text,
+          text: '',
+          hintText: 'State / Province',
+          onChanged: (value) {},
         ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _postalCodeController,
-          decoration: const InputDecoration(
-            labelText: 'Postal Code',
-            border: OutlineInputBorder(),
-          ),
+        AppTextFields(
+          controller: _streetAddressController,
+          keyboardType: TextInputType.text,
+          text: '',
+          hintText: 'Postal code',
+          onChanged: (value) {},
         ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _countryController,
-          decoration: const InputDecoration(
-            labelText: 'Country',
-            border: OutlineInputBorder(),
+        const SizedBox(height: 16.0),
+        TextButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(40.0),
+              ),
+            ),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+            backgroundColor: MaterialStateProperty.all(AppColors.green),
           ),
-        ),
-        const SizedBox(height: 32),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              _currentStep = 1;
-            });
-          },
-          child: const Text('Next'),
+          onPressed: () {},
+          child: const Text(
+            'Sign In',
+            style: TextStyle(color: AppColors.white),
+          ),
         ),
       ],
     );
