@@ -124,7 +124,7 @@ query AllProductsByProductID($productId: String!) {
                 ),
                 Text(
                   product[0]['name'],
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.black,
                       fontSize: 19,
                       fontWeight: FontWeight.w600),
@@ -146,7 +146,7 @@ query AllProductsByProductID($productId: String!) {
                     ),
                     Text(
                       product[0]['discountedPrice'].toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           color: AppColors.green),
@@ -166,7 +166,7 @@ query AllProductsByProductID($productId: String!) {
                     ),
                     Text(
                       product[0]['actualPrice'].toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: Color(0xffc2c2c2),
@@ -184,6 +184,7 @@ query AllProductsByProductID($productId: String!) {
                   ),
                 ),
                 Accordion(
+                  disableScrolling: true,
                   contentBorderRadius: 0,
                   headerBorderRadius: 0,
                   rightIcon: const Icon(
@@ -216,9 +217,12 @@ query AllProductsByProductID($productId: String!) {
                   text: 'Buy Now',
                   onPressed: () => {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => OrderScreen(),
+                      builder: (context) => const OrderScreen(),
                     ))
                   },
+                ),
+                const SizedBox(
+                  height: 46,
                 )
               ],
             ),
@@ -251,7 +255,7 @@ class AppTextButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(color: AppColors.white),
+        style: const TextStyle(color: AppColors.white),
       ),
     );
   }

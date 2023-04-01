@@ -52,7 +52,9 @@ class AppTextFields extends StatelessWidget {
                 //  when the TextFormField in unfocused
                 ),
             hintText: hintText,
-            hintStyle: const TextStyle(color: Colors.black12),
+            hintStyle: text == ''
+                ? const TextStyle(color: Colors.black38)
+                : const TextStyle(color: Colors.black12),
             suffixIcon: icon == "" ? Container() : icon,
             suffixIconColor: AppColors.grey,
             contentPadding: const EdgeInsets.only(top: 35.0, left: 20.0),
