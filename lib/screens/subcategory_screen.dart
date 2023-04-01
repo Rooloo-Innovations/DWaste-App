@@ -3,12 +3,14 @@ import 'package:dwaste/components/subcategory_card.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:dwaste/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../components/app_bar.dart';
 
 class SubCategoryScreen extends StatefulWidget {
-  const SubCategoryScreen({Key? key}) : super(key: key);
+  const SubCategoryScreen({Key? key, required this.subcategories})
+      : super(key: key);
+
+  final List subcategories;
 
   @override
   State<SubCategoryScreen> createState() => _SubCategoryScreenState();
@@ -38,39 +40,47 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           children: [
             Expanded(
               child: ListView(
-                children: const <Widget>[
-                  SubCategoryCard(
-                    title: "Electronics",
-                    iconURL:
-                    "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
-                    id: "640c295278809f825d23f26e",
+                children: List<Widget>.generate(
+                  widget.subcategories.length,
+                  (index) => SubCategoryCard(
+                    id: widget.subcategories[index]['id'],
+                    title: widget.subcategories[index]['name'],
+                    iconURL: widget.subcategories[index]['iconURL'],
                   ),
-                  SubCategoryCard(
-                    title: "Sports & Fitness",
-                    iconURL:
-                    "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  SubCategoryCard(
-                    title: "Books",
-                    iconURL:
-                    "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  SubCategoryCard(
-                    title: "Sports & Fitness",
-                    iconURL:
-                    "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                ],
+                ),
+                // children: const <Widget>[
+                //   SubCategoryCard(
+                //     title: "Electronics",
+                //     iconURL:
+                //     "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
+                //     id: "640c295278809f825d23f26e",
+                //   ),
+                //   SubCategoryCard(
+                //     title: "Sports & Fitness",
+                //     iconURL:
+                //     "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
+                //     id: "640c295278809f825d23f26e",
+                //   ),
+                //   SubCategoryCard(
+                //     title: "Books",
+                //     iconURL:
+                //     "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
+                //     id: "640c295278809f825d23f26e",
+                //   ),
+                //   SubCategoryCard(
+                //     title: "Sports & Fitness",
+                //     iconURL:
+                //     "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
+                //     id: "640c295278809f825d23f26e",
+                //   ),
+                // ],
               ),
             ),
           ],
         ),
       ),
       bottomNavigationBar:
-      BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
+          BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
     );
   }
 }

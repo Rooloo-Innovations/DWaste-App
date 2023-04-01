@@ -16,11 +16,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int denrBalance = 0;
+  List rewardList = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchBalance();
+    fetchRewards();
   }
 
   void fetchBalance() async {
@@ -48,6 +50,36 @@ query FetchRewards {
       print(result.data);
       setState(() {
         denrBalance = result.data!['fetchRewards']['rewards']['totalRewards'];
+      });
+    }
+  }
+
+  void fetchRewards() async {
+    final GraphQLClient client = await getClient();
+
+    final QueryOptions options = QueryOptions(
+      document: gql(r'''
+query AllScannedByUserID {
+  allScannedByUserID {
+    scanned {
+      userID
+      productType
+      pointsEarned
+      scannedOn
+    }
+  }
+}
+    '''),
+    );
+
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      throw result.exception.toString();
+    } else {
+      print(result.data);
+      setState(() {
+        rewardList = result.data!['allScannedByUserID']['scanned'];
       });
     }
   }
@@ -86,20 +118,16 @@ query FetchRewards {
                 fontWeight: FontWeight.w700,
                 color: AppColors.black),
           ),
-          const RewardMaterial(
-            productType: 'Plastic',
-            pointsEarned: '10',
-            scannedOn: '2',
-          ),
-          const RewardMaterial(
-            productType: 'Plastic',
-            pointsEarned: '10',
-            scannedOn: '2',
-          ),
-          const RewardMaterial(
-            productType: 'Plastic',
-            pointsEarned: '10',
-            scannedOn: '2',
+          Column(
+            children: List<Widget>.generate(
+              rewardList.length,
+              (index) => RewardMaterial(
+                productType: rewardList[index]['productType'],
+                pointsEarned: rewardList[index]['pointsEarned'],
+                scannedOn: DateTime.fromMillisecondsSinceEpoch(
+                    rewardList[index]['scannedOn']),
+              ),
+            ),
           ),
           const SizedBox(
             height: 24,
@@ -110,6 +138,9 @@ query FetchRewards {
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: AppColors.black),
+          ),
+          Column(
+            children: [],
           ),
           const TransactionCard(),
           const TransactionCard(),

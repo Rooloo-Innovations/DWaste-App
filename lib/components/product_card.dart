@@ -9,7 +9,7 @@ class ProductCard extends StatelessWidget {
     required this.image,
     required this.name,
     required this.price,
-    this.onTap,
+    required this.product,
   });
 
   final String image;
@@ -17,6 +17,8 @@ class ProductCard extends StatelessWidget {
   final int price;
   final onTap;
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+  final product;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,7 +26,7 @@ class ProductCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const ProductScreen(),
+            builder: (context) => ProductScreen(product: product),
           ));
         },
         child: Container(
@@ -36,7 +38,7 @@ class ProductCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                E xpanded(
+                Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: SizedBox(
@@ -91,48 +93,6 @@ class ProductCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Expanded(
-                //       child: Text(
-                //         name,
-                //         style: TextStyle(
-                //           fontSize: 14,
-                //           color: AppColors.black,
-                //           fontWeight: FontWeight.w600,
-                //         ),
-                //         softWrap: true,
-                //         maxLines: 2,
-                //       ),
-                //     ),
-                //     const SizedBox(
-                //       width: 10,
-                //     ),
-                //     Row(
-                //       children: [
-                //         SvgPicture.asset(
-                //           'assets/images/icons/DIcon.svg',
-                //           width: 16,
-                //           height: 16,
-                //           colorFilter: const ColorFilter.mode(
-                //               AppColors.green, BlendMode.srcIn),
-                //         ),
-                //         const SizedBox(
-                //           width: 2,
-                //         ),
-                //         Text(
-                //           price.toString(),
-                //           style: TextStyle(
-                //               fontSize: 16,
-                //               fontWeight: FontWeight.w700,
-                //               color: AppColors.green),
-                //         ),
-                //       ],
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),

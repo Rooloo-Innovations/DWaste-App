@@ -4,6 +4,9 @@ import 'package:dwaste/components/category_card.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:dwaste/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+import '../models/gql_client.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
@@ -25,6 +28,49 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     });
   }
 
+  List categoryList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchCategories();
+  }
+
+  void fetchCategories() async {
+    final GraphQLClient client = await getClient();
+
+    final QueryOptions options = QueryOptions(document: gql(r'''
+query AllCategories {
+  allCategories {
+    success
+    message
+    categories {
+      id
+      name
+      iconURL
+      subcategories {
+        id
+        name
+        iconURL
+      }
+    }
+  }
+}
+    '''));
+
+    final QueryResult result = await client.query(options);
+
+    if (result.hasException) {
+      throw result.exception.toString();
+    } else {
+      setState(() {
+        categoryList = result.data!['allCategories']['categories'];
+        print(categoryList);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,50 +87,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 childAspectRatio: 4 / 5,
-                children: const <Widget>[
-                  CategoryCard(
-                    title: "Electronics",
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  CategoryCard(
-                    title: "Sports & Fitness",
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  CategoryCard(
-                    title: "Books",
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  CategoryCard(
-                    title: "Sports & Fitness",
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  CategoryCard(
-                    title: "Books",
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  CategoryCard(
-                    title: "Electronics",
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                  CategoryCard(
-                    title: "Sports & Fitness",
-                    iconURL:
-                        "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                    id: "640c295278809f825d23f26e",
-                  ),
-                ],
+                children: List<Widget>.generate(
+                  categoryList.length,
+                  (index) => CategoryCard(
+                      subcategories: categoryList[index]['subcategories'],
+                      title: categoryList[index]['name'],
+                      iconURL: categoryList[index]['iconURL']),
+                ),
               ),
             ),
           ],

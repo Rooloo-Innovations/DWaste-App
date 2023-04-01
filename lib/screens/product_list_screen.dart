@@ -1,12 +1,18 @@
+import 'package:dwaste/components/app_bar.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../components/bottom_navbar.dart';
 import '../components/product_card.dart';
 import '../models/gql_client.dart';
+import 'home_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
-  const ProductListScreen({Key? key}) : super(key: key);
+  const ProductListScreen({Key? key, required this.subCategoryId})
+      : super(key: key);
+
+  final String subCategoryId;
 
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
@@ -15,14 +21,26 @@ class ProductListScreen extends StatefulWidget {
 class _ProductListScreenState extends State<ProductListScreen> {
   List productsList = [];
 
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => HomeScreen(screenIndex: index),
+    ));
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchProductsbyCategoryId();
+    fetchProductsByCategoryId(widget.subCategoryId);
   }
 
-  void fetchProductsbyCategoryId() async {
+  void fetchProductsByCategoryId(subCategoryId) async {
     final GraphQLClient client = await getClient();
 
     final QueryOptions options = QueryOptions(document: gql(r'''
@@ -39,7 +57,7 @@ query AllProductsByCategory($subCategoryId: String!) {
     }
   }
 }
-    '''), variables: {"subCategoryId": "640c29be27c311751b05ee70"});
+    '''), variables: {"subCategoryId": subCategoryId});
 
     final QueryResult result = await client.query(options);
 
@@ -56,6 +74,9 @@ query AllProductsByCategory($subCategoryId: String!) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: buildAppBar(context),
+      bottomNavigationBar:
+          BottomNavbar(selectedIndex: _selectedIndex, onTapped: _onItemTapped),
       backgroundColor: AppColors.white,
       body: Column(
         children: [
@@ -72,41 +93,9 @@ query AllProductsByCategory($subCategoryId: String!) {
                     name: productsList[index]['name'],
                     price: productsList[index]['discountedPrice'],
                     image: productsList[index]['imageURL'],
+                    product: productsList[index]['id'],
                   ),
                 ),
-
-                // children: <Widget>[
-                //   ProductCard(
-                //     name: 'Headphones',
-                //     price: 10,
-                //     image: 'assets/images/headphone.png',
-                //   ),
-                //   ProductCard(
-                //     name: 'Headphone',
-                //     price: 10,
-                //     image: 'assets/images/headphone.png',
-                //   ),
-                //   ProductCard(
-                //     name: 'Headphone',
-                //     price: 10,
-                //     image: 'assets/images/headphone.png',
-                //   ),
-                //   ProductCard(
-                //     name: 'Headphone',
-                //     price: 10,
-                //     image: 'assets/images/headphone.png',
-                //   ),
-                //   ProductCard(
-                //     name: 'Headphone',
-                //     price: 10,
-                //     image: 'assets/images/headphone.png',
-                //   ),
-                //   ProductCard(
-                //     name: 'Headphone',
-                //     price: 10,
-                //     image: 'assets/images/headphone.png',
-                //   ),
-                // ],
               ),
             ),
           ),
