@@ -47,7 +47,7 @@ class ProductCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {
-                          return Image(
+                          return const Image(
                               image:
                                   AssetImage('assets/images/placeholder.png'));
                         },
@@ -60,7 +60,7 @@ class ProductCard extends StatelessWidget {
                 ),
                 Text(
                   capitalize(name),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: AppColors.black,
                     fontWeight: FontWeight.w600,
@@ -85,7 +85,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     Text(
                       price.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: AppColors.green),

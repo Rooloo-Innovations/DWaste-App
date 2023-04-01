@@ -2,6 +2,7 @@ import 'package:dwaste/components/app_bar.dart';
 import 'package:dwaste/components/app_textfield.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -32,7 +33,7 @@ class _OrderScreenState extends State<OrderScreen> {
       appBar: buildAppBar(context),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -65,14 +66,14 @@ class _OrderScreenState extends State<OrderScreen> {
               color: _currentStep > 0 ? AppColors.green : AppColors.grey,
             ),
             height: 1.5,
-            margin: EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: 16),
           ),
         ),
         GestureDetector(
           onTap: () {
-            setState(() {
-              _currentStep = 1;
-            });
+            // setState(() {
+            //   _currentStep = 1;
+            // });
           },
           child: _buildStepCircle('2', 'Order Summary', _currentStep >= 1),
         ),
@@ -82,14 +83,14 @@ class _OrderScreenState extends State<OrderScreen> {
               color: _currentStep > 1 ? AppColors.green : AppColors.grey,
             ),
             height: 1.5,
-            margin: EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: 16),
           ),
         ),
         GestureDetector(
           onTap: () {
-            setState(() {
-              _currentStep = 2;
-            });
+            // setState(() {
+            //   _currentStep = 2;
+            // });
           },
           child: _buildStepCircle('3', 'Completion', _currentStep >= 2),
         ),
@@ -125,7 +126,7 @@ class _OrderScreenState extends State<OrderScreen> {
         const SizedBox(height: 8),
         Text(
           label,
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12),
         ),
       ],
     );
@@ -148,18 +149,26 @@ class _OrderScreenState extends State<OrderScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Text(
+          "* All fields are mandatory",
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            fontSize: 12,
+            color: AppColors.black.withOpacity(0.7),
+          ),
+        ),
         AppTextFields(
           controller: _fullNameController,
           keyboardType: TextInputType.text,
           text: '',
-          hintText: 'Full Name (Required)',
+          hintText: 'Full Name',
           onChanged: (value) {},
         ),
         AppTextFields(
           controller: _phoneNumberController,
           keyboardType: TextInputType.text,
           text: '',
-          hintText: 'Phone Number (Required)',
+          hintText: 'Phone Number',
           onChanged: (value) {},
         ),
         AppTextFields(
@@ -170,28 +179,28 @@ class _OrderScreenState extends State<OrderScreen> {
           onChanged: (value) {},
         ),
         AppTextFields(
-          controller: _streetAddressController,
+          controller: _apartmentController,
           keyboardType: TextInputType.text,
           text: '',
           hintText: 'Apartment / floor / suite / building',
           onChanged: (value) {},
         ),
         AppTextFields(
-          controller: _streetAddressController,
+          controller: _cityController,
           keyboardType: TextInputType.text,
           text: '',
           hintText: 'City',
           onChanged: (value) {},
         ),
         AppTextFields(
-          controller: _streetAddressController,
+          controller: _stateController,
           keyboardType: TextInputType.text,
           text: '',
           hintText: 'State / Province',
           onChanged: (value) {},
         ),
         AppTextFields(
-          controller: _streetAddressController,
+          controller: _postalCodeController,
           keyboardType: TextInputType.text,
           text: '',
           hintText: 'Postal code',
@@ -202,15 +211,19 @@ class _OrderScreenState extends State<OrderScreen> {
           style: ButtonStyle(
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(40.0),
+                borderRadius: BorderRadius.circular(40.0),
               ),
             ),
             padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
             backgroundColor: MaterialStateProperty.all(AppColors.green),
           ),
-          onPressed: () {},
+          onPressed: () {
+            setState(() {
+              _currentStep = 1;
+            });
+          },
           child: const Text(
-            'Sign In',
+            'Continue',
             style: TextStyle(color: AppColors.white),
           ),
         ),
@@ -222,55 +235,275 @@ class _OrderScreenState extends State<OrderScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Order Summary'),
+        const Text(
+          'Deliver to:',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+        ),
         const SizedBox(height: 16),
-        const Text('Shipping Address:'),
-        const SizedBox(height: 8),
         Text(_fullNameController.text),
         Text(_phoneNumberController.text),
         Text(_streetAddressController.text),
         Text(_apartmentController.text),
         Text(
-            '${_cityController.text}, ${_stateController.text} ${_postalCodeController.text}'),
+            '${_cityController.text}, ${_stateController.text}, ${_postalCodeController.text}'),
         Text(_countryController.text),
         const SizedBox(height: 16),
-        const Text('Item Ordered:'),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _itemController,
-          decoration: const InputDecoration(
-            labelText: 'Item',
-            border: OutlineInputBorder(),
+        const Text(
+          'Cart items:',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
           ),
         ),
         const SizedBox(height: 16),
-        const Text('Subtotal:'),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _subtotalController,
-          decoration: const InputDecoration(
-            labelText: 'Subtotal',
-            border: OutlineInputBorder(),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            color: AppColors.white,
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 6),
+            ],
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                height: 120,
+                child: Image.network(
+                    "https://dwaste.knowjamil.com/uploads?image=iphone_13.png"),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "The everyday headphones",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/icons/DIcon.svg',
+                        width: 20,
+                        height: 20,
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.green, BlendMode.srcIn),
+                      ),
+                      const SizedBox(
+                        width: 3,
+                      ),
+                      const Text(
+                        "54",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.green),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+        const Text(
+          'Price details:',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
           ),
         ),
         const SizedBox(height: 16),
-        const Text('Total:'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Price:",
+                style: TextStyle(
+                  color: AppColors.black.withOpacity(0.7),
+                )),
+            Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/images/icons/DIcon.svg',
+                  width: 16,
+                  height: 16,
+                  colorFilter:
+                      const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                ),
+                const SizedBox(
+                  width: 3,
+                ),
+                const Text(
+                  "54",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.grey),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Discount:",
+                style: TextStyle(
+                  color: AppColors.black.withOpacity(0.7),
+                )),
+            Row(
+              children: [
+                const Text(
+                  "-",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.grey),
+                ),
+                SvgPicture.asset(
+                  'assets/images/icons/DIcon.svg',
+                  width: 16,
+                  height: 16,
+                  colorFilter:
+                      const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                ),
+                const SizedBox(
+                  width: 3,
+                ),
+                const Text(
+                  "54",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.grey),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Delivery charges:",
+                style: TextStyle(
+                  color: AppColors.black.withOpacity(0.7),
+                )),
+            const Row(
+              children: [
+                // SvgPicture.asset(
+                //   'assets/images/icons/DIcon.svg',
+                //   width: 16,
+                //   height: 16,
+                //   colorFilter:
+                //       const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                // ),
+                // const SizedBox(
+                //   width: 3,
+                // ),
+                Text(
+                  "Free",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.grey),
+                ),
+              ],
+            ),
+          ],
+        ),
         const SizedBox(height: 8),
-        TextField(
-          controller: _totalController,
-          decoration: const InputDecoration(
-            labelText: 'Total',
-            border: OutlineInputBorder(),
+        Container(
+          height: 1,
+          decoration: const BoxDecoration(
+            color: AppColors.grey,
           ),
         ),
-        const SizedBox(height: 32),
-        ElevatedButton(
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Total:",
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/images/icons/DIcon.svg',
+                  width: 16,
+                  height: 16,
+                  colorFilter:
+                      const ColorFilter.mode(AppColors.green, BlendMode.srcIn),
+                ),
+                const SizedBox(
+                  width: 3,
+                ),
+                const Text(
+                  "59",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.green),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const SizedBox(height: 16),
+        TextButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40.0),
+              ),
+            ),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+            backgroundColor: MaterialStateProperty.all(AppColors.green),
+          ),
           onPressed: () {
             setState(() {
               _currentStep = 2;
             });
           },
-          child: const Text('Pay'),
+          child: const Text(
+            'Place Order',
+            style: TextStyle(color: AppColors.white),
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        TextButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    40.0,
+                  ),
+                  side: const BorderSide(width: 2, color: AppColors.green)),
+            ),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+            backgroundColor: MaterialStateProperty.all(AppColors.white),
+          ),
+          onPressed: () {
+            setState(() {
+              _currentStep = 0;
+            });
+          },
+          child: const Text(
+            'Back',
+            style: TextStyle(color: AppColors.green),
+          ),
         ),
       ],
     );
@@ -278,11 +511,53 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Widget _buildCompletionStep() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Text('Congratulations!', style: TextStyle(fontSize: 24)),
-        SizedBox(height: 16),
-        Text('Your order has been completed.'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 64),
+        SizedBox(
+          height: 256,
+          child: Image.asset(
+            "assets/images/cart.png",
+          ),
+        ),
+        const Text(
+          textAlign: TextAlign.center,
+          'Congratulations!',
+          style: TextStyle(
+            fontSize: 24,
+            color: AppColors.green,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          textAlign: TextAlign.center,
+          'You have successfully placed the order. Your order will be shipped in 2-3 business days.',
+          style: TextStyle(
+            color: AppColors.black.withOpacity(0.8),
+          ),
+        ),
+        const SizedBox(height: 32),
+        TextButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40.0),
+              ),
+            ),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+            backgroundColor: MaterialStateProperty.all(AppColors.green),
+          ),
+          onPressed: () {
+            setState(() {
+              _currentStep = 2;
+            });
+          },
+          child: const Text(
+            'Go to home',
+            style: TextStyle(color: AppColors.white),
+          ),
+        ),
       ],
     );
   }
