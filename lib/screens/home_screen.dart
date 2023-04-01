@@ -1,10 +1,10 @@
 import 'package:dwaste/components/bottom_navbar.dart';
 import 'package:dwaste/models/app_colors.dart';
-import 'package:dwaste/screens/categories_screen.dart';
 import 'package:dwaste/screens/dashboard.dart';
 import 'package:dwaste/screens/profile_screen.dart';
 // import 'package:dwaste/screens/reward_received_screen.dart';
 import 'package:dwaste/screens/scan_screen.dart';
+import 'package:dwaste/screens/shop_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -24,8 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _selectedIndex=widget.screenIndex;
+    _selectedIndex = widget.screenIndex;
   }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const Dashboard(),
     ScanScreen(),
     // const RewardsPage(),
-    const CategoriesScreen(),
+    const ShopScreen(),
     // ProductListScreen(),
     const ProfileScreen(),
   ];
