@@ -5,10 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/withdraw_screen.dart';
 
 class BalanceContainer extends StatelessWidget {
-  const BalanceContainer({super.key, this.denrBalance});
+  const BalanceContainer({super.key, this.denrBalance, this.publicKey});
 
   final denrBalance;
-
+  final publicKey;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -57,7 +57,7 @@ class BalanceContainer extends StatelessWidget {
                   ),
                   Text(
                     "DENR $denrBalance",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: AppColors.white),
@@ -71,7 +71,10 @@ class BalanceContainer extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const WithdrawScreen(),
+                            builder: (context) => WithdrawScreen(
+                              publicKey: publicKey,
+                              balance: denrBalance,
+                            ),
                           ),
                         );
                       },

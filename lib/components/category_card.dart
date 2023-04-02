@@ -37,9 +37,7 @@ class CategoryCard extends StatelessWidget {
                   height: 18,
                 ),
                 Center(
-                  child: Expanded(
-                    child: Image.network(iconURL, fit: BoxFit.contain),
-                  ),
+                  child: Image.network(iconURL, fit: BoxFit.contain),
                 )
               ],
             )),

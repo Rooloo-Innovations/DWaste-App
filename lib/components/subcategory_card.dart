@@ -16,7 +16,7 @@ class SubCategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
@@ -37,7 +37,7 @@ class SubCategoryCard extends StatelessWidget {
                       width: 64,
                       height: 64,
                       child: Image.network(iconURL, fit: BoxFit.contain)),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Expanded(

@@ -69,7 +69,7 @@ query AllProductsByCategory($subCategoryId: String!) {
     }
   }
 }
-    '''), variables: {"subCategoryId": "640c29be27c311751b05ee70"});
+    '''), variables: const {"subCategoryId": "640c29be27c311751b05ee70"});
 
     final QueryResult result = await client.query(options);
 
@@ -78,7 +78,6 @@ query AllProductsByCategory($subCategoryId: String!) {
     } else {
       setState(() {
         productsList = result.data!['allProductsByCategory']['products'];
-        print(productsList);
       });
     }
   }
@@ -112,7 +111,6 @@ query AllCategories {
     } else {
       setState(() {
         categoryList = result.data!['allCategories']['categories'];
-        print(categoryList);
       });
     }
   }
@@ -135,14 +133,14 @@ query AllCategories {
                 children: [
                   Text(
                     "Hello $name",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       color: AppColors.black,
                       fontSize: 16,
                     ),
                   ),
                   Row(
-                    children: [
+                    children: const [
                       Text("Welcome to",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -217,16 +215,14 @@ query AllCategories {
               borderRadius: BorderRadius.circular(18),
             ),
             height: 140,
-            child: Expanded(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: List<Widget>.generate(
-                  categoryList.length,
-                  (index) => ShopScreenCategoryBox(
-                    subcategories: categoryList[index]['subcategories'],
-                    iconURL: categoryList[index]['iconURL'],
-                    title: categoryList[index]['name'],
-                  ),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: List<Widget>.generate(
+                categoryList.length,
+                (index) => ShopScreenCategoryBox(
+                  subcategories: categoryList[index]['subcategories'],
+                  iconURL: categoryList[index]['iconURL'],
+                  title: categoryList[index]['name'],
                 ),
               ),
             ),
@@ -268,23 +264,21 @@ query AllCategories {
           const SizedBox(
             height: 16,
           ),
-          Expanded(
-            child: GridView.count(
-              padding: EdgeInsets.zero, // set padding to zero
-              physics:
-                  const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-              shrinkWrap: true, // You won't see infinite size error
-              primary: false,
-              crossAxisCount: 2,
-              childAspectRatio: 2 / 3,
-              children: List<Widget>.generate(
-                productsList.length,
-                (index) => ProductCard(
-                  name: productsList[index]['name'],
-                  price: productsList[index]['discountedPrice'],
-                  image: productsList[index]['imageURL'],
-                  product: productsList[index]['id'],
-                ),
+          GridView.count(
+            padding: EdgeInsets.zero, // set padding to zero
+            physics:
+                const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+            shrinkWrap: true, // You won't see infinite size error
+            primary: false,
+            crossAxisCount: 2,
+            childAspectRatio: 2 / 3,
+            children: List<Widget>.generate(
+              productsList.length,
+              (index) => ProductCard(
+                name: productsList[index]['name'],
+                price: productsList[index]['discountedPrice'],
+                image: productsList[index]['imageURL'],
+                product: productsList[index]['id'],
               ),
             ),
           ),

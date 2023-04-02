@@ -1,6 +1,5 @@
 import 'package:dwaste/components/balance_container.dart';
 import 'package:dwaste/components/reward_material.dart';
-import 'package:dwaste/components/transaction_material.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -16,26 +15,28 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int denrBalance = 0;
+  String publicKey = "";
   List rewardList = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchBalance();
+    fetchUserData();
     fetchRewards();
   }
 
-  void fetchBalance() async {
+  void fetchUserData() async {
     final GraphQLClient client = await getClient();
 
     final QueryOptions options = QueryOptions(
       document: gql(r'''
-query FetchRewards {
-  fetchRewards {
+query UserDetails {
+  userDetails {
     success
     message
-    rewards {
-      totalRewards
+    users {
+      denrTokens
+      publicKey
     }
   }
 }
@@ -47,9 +48,9 @@ query FetchRewards {
     if (result.hasException) {
       throw result.exception.toString();
     } else {
-      print(result.data);
       setState(() {
-        denrBalance = result.data!['fetchRewards']['rewards']['totalRewards'];
+        denrBalance = result.data!['userDetails']['users'][0]['denrTokens'];
+        publicKey = result.data!['userDetails']['users'][0]['publicKey'];
       });
     }
   }
@@ -77,7 +78,6 @@ query AllScannedByUserID {
     if (result.hasException) {
       throw result.exception.toString();
     } else {
-      print(result.data);
       setState(() {
         rewardList = result.data!['allScannedByUserID']['scanned'];
       });
@@ -107,6 +107,7 @@ query AllScannedByUserID {
           ),
           BalanceContainer(
             denrBalance: denrBalance,
+            publicKey: publicKey,
           ),
           const SizedBox(
             height: 24,
@@ -122,29 +123,28 @@ query AllScannedByUserID {
             children: List<Widget>.generate(
               rewardList.length,
               (index) => RewardMaterial(
-                productType: rewardList[index]['productType'],
-                pointsEarned: rewardList[index]['pointsEarned'],
-                scannedOn: DateTime.fromMillisecondsSinceEpoch(
-                    rewardList[index]['scannedOn']),
-              ),
+                  productType: rewardList[index]['productType'],
+                  pointsEarned: rewardList[index]['pointsEarned'],
+                  scannedOn: DateTime.fromMillisecondsSinceEpoch(
+                      rewardList[index]['scannedOn'])),
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
-          const Text(
-            "Transactions",
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: AppColors.black),
-          ),
-          Column(
-            children: [],
-          ),
-          const TransactionCard(),
-          const TransactionCard(),
-          const TransactionCard(),
+          // const SizedBox(
+          //   height: 24,
+          // ),
+          // const Text(
+          //   "Transactions",
+          //   style: TextStyle(
+          //       fontSize: 20,
+          //       fontWeight: FontWeight.w700,
+          //       color: AppColors.black),
+          // ),
+          // Column(
+          //   children: [],
+          // ),
+          // const TransactionCard(),
+          // const TransactionCard(),
+          // const TransactionCard(),
         ],
       ),
     );

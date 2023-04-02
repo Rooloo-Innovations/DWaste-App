@@ -5,7 +5,9 @@ import 'package:dwaste/screens/register_screen.dart';
 import 'package:dwaste/screens/reward_received_screen.dart';
 import 'package:dwaste/screens/startup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import 'models/app_colors.dart';
 
@@ -45,24 +47,33 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Inter',
-        appBarTheme: const AppBarTheme(
-          color: AppColors.backgroundColor,
-          elevation: 0.0,
+    return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayWidget: const Center(
+        child: SpinKitFadingCube(
+          color: AppColors.green,
+          size: 50.0,
         ),
-        primaryColor: AppColors.yellow,
       ),
-      initialRoute: '/home',
-      routes: {
-        '/': (context) => StartupScreen(),
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => CreateAccountScreen(),
-        '/home': (context) => HomeScreen(),
-        '/reward': (context) => RewardScreen(),
-      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Inter',
+          appBarTheme: const AppBarTheme(
+            color: AppColors.backgroundColor,
+            elevation: 0.0,
+          ),
+          primaryColor: AppColors.yellow,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const StartupScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/register': (context) => CreateAccountScreen(),
+          '/home': (context) => const HomeScreen(),
+          '/reward': (context) => const RewardScreen(),
+        },
+      ),
     );
   }
 }

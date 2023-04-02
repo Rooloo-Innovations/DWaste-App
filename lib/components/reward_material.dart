@@ -17,7 +17,7 @@ class RewardMaterial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -36,14 +36,14 @@ class RewardMaterial extends StatelessWidget {
                 children: [
                   Text(
                     "$productType",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: AppColors.black),
                   ),
                   Text(
                     "$scannedOn",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.black),

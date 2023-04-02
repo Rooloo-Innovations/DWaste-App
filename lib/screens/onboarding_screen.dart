@@ -20,8 +20,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           controllerColor: AppColors.green,
           finishButtonColor: AppColors.green,
           finishButtonText: 'Let’s Get Started',
-          skipTextButton: Text('Skip'),
-          trailing: Text('Login'),
+          skipTextButton: const Text('Skip'),
+          trailing: const Text('Login'),
           background: [
             // Image.asset('assets/images/onboarding/onboarding_1.png'),
             // Image.asset('assets/images/onboarding/onboarding_2.png'),
@@ -33,7 +33,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           speed: 1.8,
           pageBodies: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Column(
                 children: <Widget>[
                   Container(
@@ -92,7 +92,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             // Onboarding second screen
 
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Column(
                 children: <Widget>[
                   Container(
@@ -151,7 +151,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             // Onboarding third screen
 
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Column(
                 children: <Widget>[
                   Container(

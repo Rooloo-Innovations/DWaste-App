@@ -48,32 +48,6 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                     iconURL: widget.subcategories[index]['iconURL'],
                   ),
                 ),
-                // children: const <Widget>[
-                //   SubCategoryCard(
-                //     title: "Electronics",
-                //     iconURL:
-                //     "https://dwaste.knowjamil.com/uploads/icons?image=electronics.png",
-                //     id: "640c295278809f825d23f26e",
-                //   ),
-                //   SubCategoryCard(
-                //     title: "Sports & Fitness",
-                //     iconURL:
-                //     "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                //     id: "640c295278809f825d23f26e",
-                //   ),
-                //   SubCategoryCard(
-                //     title: "Books",
-                //     iconURL:
-                //     "https://dwaste.knowjamil.com/uploads/icons?image=books.png",
-                //     id: "640c295278809f825d23f26e",
-                //   ),
-                //   SubCategoryCard(
-                //     title: "Sports & Fitness",
-                //     iconURL:
-                //     "https://dwaste.knowjamil.com/uploads/icons?image=clothes.png",
-                //     id: "640c295278809f825d23f26e",
-                //   ),
-                // ],
               ),
             ),
           ],

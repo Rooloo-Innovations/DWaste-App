@@ -74,16 +74,12 @@ query AllProductsByProductID($productId: String!) {
     } else {
       setState(() {
         product = result.data!['allProductsByProductID']['products'];
-        print("productdewd");
-        print(product[0]['imageURL']);
       });
     }
   }
 
   final _headerStyle = const TextStyle(
       color: AppColors.black, fontSize: 15, fontWeight: FontWeight.w600);
-  final _contentStyleHeader = const TextStyle(
-      color: AppColors.black, fontSize: 14, fontWeight: FontWeight.w700);
   final _contentStyle = const TextStyle(
       color: AppColors.black, fontSize: 14, fontWeight: FontWeight.normal);
 
@@ -178,10 +174,8 @@ query AllProductsByProductID($productId: String!) {
                 const SizedBox(
                   height: 10,
                 ),
-                const Expanded(
-                  child: Divider(
-                    color: AppColors.grey,
-                  ),
+                const Divider(
+                  color: AppColors.grey,
                 ),
                 Accordion(
                   disableScrolling: true,
@@ -252,7 +246,7 @@ class AppTextButton extends StatelessWidget {
       style: ButtonStyle(
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(40.0),
+            borderRadius: BorderRadius.circular(40.0),
           ),
         ),
         padding: MaterialStateProperty.all(const EdgeInsets.all(20)),

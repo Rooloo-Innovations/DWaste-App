@@ -47,13 +47,11 @@ class _ScanScreenState extends State<ScanScreen> {
     final QueryResult result = await client.mutate(options);
 
     if (result.hasException) {
-      print(result.exception);
       return;
     }
 
     final success = result.data!['uploadImages']['success'];
     final message = result.data!['uploadImages']['message'];
-    final response = result.data!['uploadImages']['response'];
 
     if (success) {
       if (!mounted) {
@@ -69,9 +67,6 @@ class _ScanScreenState extends State<ScanScreen> {
       }
       _showDialog(dailyMilestone);
     }
-
-    print(
-        'Image sent successfully: $success, message: $message, response: $response');
   }
 
   Future<void> _showDialog(bool dailyMilestone) async {
@@ -157,8 +152,6 @@ class _ScanScreenState extends State<ScanScreen> {
 
     final bytes = await imageFile.readAsBytes();
     final base64Image = base64Encode(bytes);
-    final base64de = base64Decode(base64Image);
-
     return base64Image;
   }
 
@@ -203,7 +196,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 fit: BoxFit.cover,
                 child: SizedBox(
                     width: 100, // the actual width is not important here
-                    child: CameraPreview(_cameraController!)),
+                    child: CameraPreview(_cameraController)),
               ),
             ),
             Align(

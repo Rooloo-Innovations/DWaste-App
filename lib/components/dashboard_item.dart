@@ -27,7 +27,7 @@ class DashboardItem extends StatelessWidget {
               height: 140,
               width: 140,
               child: Image.asset(
-                "assets/images/cardboard_box.png",
+                "assets/images/plastic_bottle_1.png",
                 fit: BoxFit.cover,
               ),
             ),
@@ -36,7 +36,7 @@ class DashboardItem extends StatelessWidget {
             height: 16,
           ),
           const Text(
-            "Cardboard",
+            "Used Water Bottle",
             style: TextStyle(
               color: AppColors.green,
               fontSize: 14,

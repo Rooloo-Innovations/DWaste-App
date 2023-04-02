@@ -7,13 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class WithdrawScreen extends StatefulWidget {
-  const WithdrawScreen({Key? key}) : super(key: key);
+  const WithdrawScreen(
+      {Key? key, required this.balance, required this.publicKey})
+      : super(key: key);
+
+  final int balance;
+  final String publicKey;
 
   @override
   State<WithdrawScreen> createState() => _WithdrawScreenState();
 }
 
 class _WithdrawScreenState extends State<WithdrawScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      _publicKeyController.text = widget.publicKey;
+    });
+  }
+
   final TextEditingController _withdrawAmountController =
       TextEditingController();
   final TextEditingController _publicKeyController = TextEditingController();
@@ -128,8 +142,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   const SizedBox(
                     width: 3,
                   ),
-                  const Text(
-                    "54",
+                  Text(
+                    widget.balance.toString(),
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,

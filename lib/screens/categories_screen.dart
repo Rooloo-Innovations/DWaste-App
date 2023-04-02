@@ -67,7 +67,6 @@ query AllCategories {
     } else {
       setState(() {
         categoryList = result.data!['allCategories']['categories'];
-        print(categoryList);
       });
     }
   }

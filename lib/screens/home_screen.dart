@@ -2,7 +2,6 @@ import 'package:dwaste/components/bottom_navbar.dart';
 import 'package:dwaste/models/app_colors.dart';
 import 'package:dwaste/screens/dashboard.dart';
 import 'package:dwaste/screens/profile_screen.dart';
-// import 'package:dwaste/screens/reward_received_screen.dart';
 import 'package:dwaste/screens/scan_screen.dart';
 import 'package:dwaste/screens/shop_screen.dart';
 import 'package:flutter/material.dart';

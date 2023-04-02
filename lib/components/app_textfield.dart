@@ -2,7 +2,7 @@ import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTextFields extends StatelessWidget {
-  AppTextFields({
+  const AppTextFields({super.key,
     required this.text,
     this.icon,
     this.hintText,

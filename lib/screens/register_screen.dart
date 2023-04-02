@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/app_headings.dart';
 import '../components/app_textfield.dart';
@@ -7,6 +8,8 @@ import '../models/app_colors.dart';
 import '../models/gql_client.dart';
 
 class CreateAccountScreen extends StatefulWidget {
+  const CreateAccountScreen({super.key});
+
   @override
   _CreateAccountScreenState createState() => _CreateAccountScreenState();
 }
@@ -21,6 +24,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   bool _acceptTerms = false;
   bool _isLoading = false;
   String _errorMessage = '';
+
+  Future<void> setAccessToken(String accessToken) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('access_token', accessToken);
+  }
 
   void _createAccount() async {
     final fullName = _fullNameController.text;
@@ -77,15 +85,10 @@ mutation RegisterUser($email: String!, $fullName: String!, $password: String!, $
   registerUser(email: $email, fullName: $fullName, password: $password, publicKey: $publicKey) {
     success
     message
-    user {
-      id
-      email
-      fullName
-      password
-      publicKey
-    }
+    accessToken
   }
-}''';
+}
+''';
     final variables = {
       'fullName': fullName,
       'email': email,
@@ -98,7 +101,7 @@ mutation RegisterUser($email: String!, $fullName: String!, $password: String!, $
     ));
 
     if (result.hasException) {
-      final message = result.exception?.graphqlErrors?.first?.message ??
+      final message = result.exception?.graphqlErrors.first.message ??
           'An error occurred.';
 
       setState(() {
@@ -110,7 +113,9 @@ mutation RegisterUser($email: String!, $fullName: String!, $password: String!, $
     }
 
     if (result.data?['registerUser']['success'] == true) {
-      final token = result.data?['registerUser']?['accessToken'];
+      final accessToken = result.data?['registerUser']?['accessToken'];
+
+      await setAccessToken(accessToken);
 
       setState(() {
         _isLoading = false;
@@ -120,11 +125,9 @@ mutation RegisterUser($email: String!, $fullName: String!, $password: String!, $
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/home',
-        ModalRoute.withName('/login'),
+        ModalRoute.withName('/register'),
       );
     }
-
-    // Save the token and navigate to the home screen.
   }
 
   @override

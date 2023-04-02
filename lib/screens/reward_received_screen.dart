@@ -187,7 +187,7 @@ class RewardScreen extends StatelessWidget {
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(40.0),
+                        borderRadius: BorderRadius.circular(40.0),
                       ),
                     ),
                     padding:

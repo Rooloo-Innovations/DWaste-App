@@ -75,8 +75,6 @@ query FetchRewards {
       final int dailyRewards =
           result.data!['fetchRewards']['rewards']['dailyRewards'];
 
-      print(result.data);
-
       setState(() {
         progress = (dailyRewards / 50).round();
         _consumedData = progress / 10;
@@ -258,9 +256,9 @@ query FetchRewards {
                           scrollDirection: Axis.horizontal,
                           children: const [
                             DashboardItem(),
-                            DashboardItem(),
-                            DashboardItem(),
-                            DashboardItem(),
+                            // DashboardItem(),
+                            // DashboardItem(),
+                            // DashboardItem(),
                           ],
                         ),
                       )

@@ -5,21 +5,23 @@ import 'package:dwaste/models/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import '../models/gql_client.dart';
+import 'home_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen(
       {super.key,
-      this.productId,
-      this.productName,
-      this.productPrice,
-      this.productImage});
+      required this.productId,
+      required this.productName,
+      required this.productPrice,
+      required this.productImage});
 
-  final productId;
-  final productName;
-  final productPrice;
-  final productImage;
+  final String productId;
+  final String productName;
+  final String productPrice;
+  final String productImage;
 
   @override
   _OrderScreenState createState() => _OrderScreenState();
@@ -39,15 +41,52 @@ class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController _stateController = TextEditingController();
   final TextEditingController _postalCodeController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
-  final TextEditingController _itemController = TextEditingController();
-  final TextEditingController _subtotalController = TextEditingController();
-  final TextEditingController _totalController = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // createOrder();
+  }
+
+  Future<void> _showDialog(String message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: const Center(child: Text('Could not place order')),
+          actionsAlignment: MainAxisAlignment.spaceAround,
+          contentPadding: const EdgeInsets.all(16.0),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16.0))),
+          backgroundColor: AppColors.white,
+          content: SingleChildScrollView(
+            child: Text(message),
+          ),
+          actions: <Widget>[
+            // TextButton(
+            //   child: const Text(
+            //     'Cancel',
+            //     style: TextStyle(color: AppColors.red),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context, rootNavigator: true).pop();
+            //   },
+            // ),
+            TextButton(
+              child: const Text(
+                'Okay',
+                style: TextStyle(color: AppColors.green),
+              ),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<bool> createOrder() async {
@@ -97,20 +136,17 @@ mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $ad
 
     final QueryResult result = await client.mutate(options);
 
-    print("Im Here");
-
     if (result.hasException) {
       throw result.exception.toString();
     } else {
-      print(result.data);
-      // setState(() {
       bool orderStatus = result.data!['createNewOrder']['success'];
-      bool orderResponse = result.data!['createNewOrder']['message'];
+      String orderResponse = result.data!['createNewOrder']['message'];
 
-      if (!orderStatus) {}
+      if (!orderStatus) {
+        _showDialog(orderResponse);
+      }
 
       return orderStatus;
-      // });
     }
   }
 
@@ -417,7 +453,7 @@ mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $ad
                       ),
                       Text(
                         widget.productPrice.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: AppColors.green),
@@ -459,7 +495,7 @@ mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $ad
                 ),
                 Text(
                   widget.productPrice.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: AppColors.grey),
@@ -515,7 +551,7 @@ mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $ad
                   color: AppColors.black.withOpacity(0.7),
                 )),
             Row(
-              children: [
+              children: const [
                 // SvgPicture.asset(
                 //   'assets/images/icons/DIcon.svg',
                 //   width: 16,
@@ -538,7 +574,7 @@ mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $ad
           ],
         ),
         const SizedBox(height: 8),
-        DottedLine(
+        const DottedLine(
           dashColor: Colors.grey,
           dashLength: 2.0,
         ),
@@ -589,11 +625,16 @@ mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $ad
             padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
             backgroundColor: MaterialStateProperty.all(AppColors.green),
           ),
-          onPressed: () {
-            createOrder();
-            setState(() {
-              // _currentStep = 2;
-            });
+          onPressed: () async {
+            context.loaderOverlay.show();
+            bool orderResponse = await createOrder();
+            context.loaderOverlay.hide();
+
+            if (orderResponse) {
+              setState(() {
+                _currentStep = 2;
+              });
+            }
           },
           child: const Text(
             'Place Order',
@@ -667,9 +708,13 @@ mutation CreateNewOrder($productId: String!, $amount: Int!, $quantity: Int!, $ad
             backgroundColor: MaterialStateProperty.all(AppColors.green),
           ),
           onPressed: () {
-            setState(() {
-              _currentStep = 2;
-            });
+            Navigator.pop(context);
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ));
+            // setState(() {
+            //   _currentStep = 2;
+            // });
           },
           child: const Text(
             'Go to home',

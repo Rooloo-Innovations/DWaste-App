@@ -16,7 +16,7 @@ AppBar buildAppBar(BuildContext context) {
       'assets/images/icons/DwasteAppBarLogo.svg',
       width: 42,
       height: 42,
-      colorFilter: ColorFilter.mode(AppColors.green, BlendMode.srcIn),
+      colorFilter: const ColorFilter.mode(AppColors.green, BlendMode.srcIn),
     ),
     backgroundColor: AppColors.white,
     elevation: 0, // 1

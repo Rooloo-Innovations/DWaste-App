@@ -35,16 +35,15 @@ Future<Map<String, dynamic>> authenticateUser(
   if (result.hasException) {
     throw result.exception.toString();
   } else {
-    Map<String, dynamic> responseJson = result.data!;
-
     final accessToken = result.data!['loginUser']['accessToken'];
-    final data = result.data!['loginUser'];
     await setAccessToken(accessToken);
     return (result.data!);
   }
 }
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -69,9 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       );
 
-      print(data['loginUser']['success']);
-      print(data['loginUser']['accessToken']);
-
       if (data['loginUser']['success'] == false) {
         setState(() {
           _errorMessage = data['loginUser']['message'];
@@ -84,8 +80,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ModalRoute.withName('/login'),
         );
       }
-
-      // TODO: Navigate to the next screen with the access token.
     } catch (e) {
       setState(() {
         _errorMessage = e.toString();
@@ -162,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(40.0),
+                          borderRadius: BorderRadius.circular(40.0),
                         ),
                       ),
                       padding:

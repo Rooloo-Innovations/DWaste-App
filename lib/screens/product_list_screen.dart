@@ -66,7 +66,6 @@ query AllProductsByCategory($subCategoryId: String!) {
     } else {
       setState(() {
         productsList = result.data!['allProductsByCategory']['products'];
-        print(productsList);
       });
     }
   }
