@@ -20,7 +20,7 @@ class OrderScreen extends StatefulWidget {
 
   final String productId;
   final String productName;
-  final String productPrice;
+  final int productPrice;
   final String productImage;
 
   @override

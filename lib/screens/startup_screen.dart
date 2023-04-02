@@ -1,8 +1,9 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:dwaste/screens/home_screen.dart';
-import 'package:dwaste/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'onboarding_screen.dart';
 
 class StartupScreen extends StatefulWidget {
   const StartupScreen({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class _StartupScreenState extends State<StartupScreen> {
         splash: 'assets/images/logo.png',
         screenFunction: () async {
           if (accessToken == null || accessToken == '') {
-            return const LoginScreen();
+            return const OnBoardingScreen();
           } else {
             // Navigate to the next screen
             return const HomeScreen();

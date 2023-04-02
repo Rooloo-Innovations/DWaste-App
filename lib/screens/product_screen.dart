@@ -175,6 +175,7 @@ query AllProductsByProductID($productId: String!) {
                   height: 10,
                 ),
                 const Divider(
+                  height: 2.0,
                   color: AppColors.grey,
                 ),
                 Accordion(

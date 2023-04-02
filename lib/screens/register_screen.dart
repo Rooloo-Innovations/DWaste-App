@@ -113,21 +113,36 @@ mutation RegisterUser($email: String!, $fullName: String!, $password: String!, $
     }
 
     if (result.data?['registerUser']['success'] == true) {
-      final accessToken = result.data?['registerUser']?['accessToken'];
+      final accessToken = result.data?['registerUser']['accessToken'];
 
       await setAccessToken(accessToken);
 
+      print(accessToken);
+
+      if (accessToken != null || accessToken != '') {
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (!mounted) return;
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          ModalRoute.withName('/register'),
+        );
+      }
+    } else {
       setState(() {
         _isLoading = false;
+        _errorMessage = result.data?['registerUser']['message'];
       });
-
-      if (!mounted) return;
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/home',
-        ModalRoute.withName('/register'),
-      );
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override

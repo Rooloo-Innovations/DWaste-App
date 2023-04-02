@@ -22,12 +22,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           finishButtonText: 'Let’s Get Started',
           skipTextButton: const Text('Skip'),
           trailing: const Text('Login'),
+          onFinish: () => {Navigator.pushNamed(context, '/login')},
           background: [
-            // Image.asset('assets/images/onboarding/onboarding_1.png'),
-            // Image.asset('assets/images/onboarding/onboarding_2.png'),
             Container(),
             Container(),
-            Container()
+            Container(),
           ],
           totalPage: 3,
           speed: 1.8,
