@@ -101,8 +101,8 @@ mutation RegisterUser($email: String!, $fullName: String!, $password: String!, $
     ));
 
     if (result.hasException) {
-      final message = result.exception?.graphqlErrors.first.message ??
-          'An error occurred.';
+      final message =
+          result.exception?.graphqlErrors.first.message ?? 'An error occurred.';
 
       setState(() {
         _isLoading = false;

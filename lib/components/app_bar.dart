@@ -22,5 +22,3 @@ AppBar buildAppBar(BuildContext context) {
     elevation: 0, // 1
   );
 }
-
-
