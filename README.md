@@ -1,16 +1,5 @@
-# dwaste
+# Dwaste
 
-A new Flutter project.
+Introducing Dwaste - the revolutionary app that incentivizes recycling and helps save the planet. With just a few clicks, you can scan any plastic item using your mobile device and earn DENR tokens as a reward for your efforts. These tokens can be redeemed for discounts and rewards at participating stores, making it easier than ever to make a positive impact on the environment while enjoying great benefits. Join the growing community of eco-conscious individuals who are making a difference with Dwaste today. Download now and start recycling smarter!
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+App link: https://play.google.com/store/apps/details?id=net.denr.dwaste&hl=en&gl=US
